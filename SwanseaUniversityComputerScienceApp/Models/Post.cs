@@ -26,6 +26,5 @@ namespace SwanseaUniversityComputerScienceApp.Models
         public string VideoLink { get; set; }
         [Display(Name = "Select a module: ")]
         public string ModuleCode { get; set; }
-        public string PostType { get; set; }
     }
 }
