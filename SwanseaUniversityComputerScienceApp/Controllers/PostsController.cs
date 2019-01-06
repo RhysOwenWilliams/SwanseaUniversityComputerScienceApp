@@ -91,6 +91,7 @@ namespace SwanseaUniversityComputerScienceApp.Controllers
             List<ApplicationUser> users = _userManager.Users
                 .OrderBy(name => name.Email)
                 .Where(name => name.Email != signedInUser)
+                .Where(name => name.Email != "Member1@email.com")
                 .ToList();
 
             List<IdentityRole> roles = _context.Roles
@@ -102,13 +103,14 @@ namespace SwanseaUniversityComputerScienceApp.Controllers
 
             foreach (ApplicationUser u in allUsers)
             {
-                foreach(var r in roles)
+                foreach (var r in roles)
                 {
                     if (await _userManager.IsInRoleAsync(u, r.ToString()))
                     {
                         userRoles.Add(u, r.ToString());
                     }
                 }
+                
             }
 
             ViewBag.UserRoles = userRoles;
@@ -204,7 +206,7 @@ namespace SwanseaUniversityComputerScienceApp.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Policy = "CanComment")]
-        public async Task<IActionResult> Details([Bind("PostID,CommentName")] PostCommentsViewModel viewModel)
+        public async Task<IActionResult> Details([Bind("PostID,CommentContent")] PostCommentsViewModel viewModel)
         {
             if (ModelState.IsValid)
             {

@@ -20,8 +20,7 @@ namespace SwanseaUniversityComputerScienceApp
                 try
                 {
                     var context = services.GetRequiredService<ApplicationDbContext>();
-                    DatabaseInitializer.InitializeAppData(context);
-                    DatabaseInitializer.InitializeUserAccounts(context);
+                    DatabaseInitializer.InitializeUserAccountsAndAppData(context);
                     DatabaseInitializer.InitialiseUserRolesAsync(context, services).Wait();
                 }
                 catch(Exception e)

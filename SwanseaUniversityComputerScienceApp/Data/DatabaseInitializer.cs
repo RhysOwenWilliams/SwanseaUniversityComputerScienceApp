@@ -20,11 +20,11 @@ namespace SwanseaUniversityComputerScienceApp.Data
         /// <summary>
         /// This method is used to add the 6 user accounts to the user database. Each account is given a name which is
         /// Customer1@email.com, Customer2@email.com, Customer3@email.com, Customer4@email.com, 
-        /// Customer5@email.com and Member1@email.com. Each of these accounts are then finalised by being given the same
+        /// Customer5@email.com and Member1@email.com. Each of these accounts are then finalised by being given the same. Also adds the remaining data to the application. The data is the modules for CS year 3 and adding some
         /// password - Password123!
         /// </summary>
         /// <param name="context"> the database context </param>
-        public static void InitializeUserAccounts(ApplicationDbContext context)
+        public static void InitializeUserAccountsAndAppData(ApplicationDbContext context)
         {
             context.Database.EnsureCreated();
 
@@ -105,70 +105,12 @@ namespace SwanseaUniversityComputerScienceApp.Data
 
                 context.SaveChangesAsync();
 
-            }
-        }
+                context.Database.EnsureCreated();
 
-        /// <summary>
-        /// This method is used to add the two roles for the application and add the initialised user accounts to
-        /// these roles
-        /// </summary>
-        /// <param name="context"> the database context for the app </param>
-        /// <param name="serviceProvider"> a service object, used for retrieving users and roles</param>
-        public static async Task InitialiseUserRolesAsync(ApplicationDbContext context, IServiceProvider serviceProvider)
-        {
-            var RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-            var UserManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-
-            string[] roles = { "Member", "Customer" };
-
-            IdentityResult result;
-
-            foreach (var role in roles)
-            {
-                var exists = await RoleManager.RoleExistsAsync(role);
-
-                if (!exists)
+                if (!context.Post.Any() && !context.Modules.Any())
                 {
-                    result = await RoleManager.CreateAsync(new IdentityRole(role));
-                }
-            }
-
-            ApplicationUser member = await UserManager.FindByEmailAsync("MEMBER1@EMAIL.COM");
-            await UserManager.AddToRoleAsync(member, "Member");
-
-            for (int j = 1; j < 6; j++)
-            {
-                ApplicationUser user = await UserManager.FindByEmailAsync("CUSTOMER" + j + "@EMAIL.COM");
-                await UserManager.AddToRoleAsync(user, "Customer");
-            }
-
-            if (!context.RoleClaims.Any())
-            {
-                IdentityRole memberRole = await RoleManager.FindByNameAsync("Member");
-                IdentityRole customerRole = await RoleManager.FindByNameAsync("Customer");
-
-                await RoleManager.AddClaimAsync(memberRole, new Claim("AddPost", "Member"));
-                await RoleManager.AddClaimAsync(memberRole, new Claim("EditPost", "Member"));
-                await RoleManager.AddClaimAsync(memberRole, new Claim("DeletePost", "Member"));
-                await RoleManager.AddClaimAsync(memberRole, new Claim("CommentOnPost", "Member"));
-                await RoleManager.AddClaimAsync(memberRole, new Claim("ChangeUserRole", "Member"));
-                await RoleManager.AddClaimAsync(customerRole, new Claim("CommentOnPost", "Customer"));
-            }
-        }
-
-        /// <summary>
-        /// This method is used to add the remaining data to the application. The data is the modules for CS year 3 and adding some
-        /// example posts for marking
-        /// </summary>
-        /// <param name="context"> the database context</param>
-        public static void InitializeAppData(ApplicationDbContext context)
-        {
-            context.Database.EnsureCreated();
-
-            if (!context.Post.Any() && !context.Modules.Any())
-            {
-                var Posts = new Post[]
-                {
+                    var Posts = new Post[]
+                    {
                     new Post
                     {
                         PostName = "Mobile Apps Exam",
@@ -220,15 +162,15 @@ namespace SwanseaUniversityComputerScienceApp.Data
                         PostedBy = "Member1",
                         TimeAndDate = "07/01/19 10:43"
                     },
-                };
+                    };
 
-                foreach(Post p in Posts)
-                {
-                    context.Post.Add(p);
-                }
+                    foreach (Post p in Posts)
+                    {
+                        context.Post.Add(p);
+                    }
 
-                var modules = new Module[]
-                {
+                    var modules = new Module[]
+                    {
                     new Module { ModuleName = "All Modules"},
                     new Module { ModuleName = "AR-501" },
                     new Module { ModuleName = "CSC306" },
@@ -249,14 +191,68 @@ namespace SwanseaUniversityComputerScienceApp.Data
                     new Module { ModuleName = "CSP302" },
                     new Module { ModuleName = "CSP344" },
                     new Module { ModuleName = "CSP354" }
-                };
+                    };
 
-                foreach (Module m in modules)
-                {
-                    context.Modules.Add(m);
+                    foreach (Module m in modules)
+                    {
+                        context.Modules.Add(m);
+                    }
+
+                    context.SaveChangesAsync();
                 }
+           
 
-                context.SaveChangesAsync();
+        }
+        }
+
+        /// <summary>
+        /// This method is used to add the two roles for the application and add the initialised user accounts to
+        /// these roles
+        /// </summary>
+        /// <param name="context"> the database context for the app </param>
+        /// <param name="serviceProvider"> a service object, used for retrieving users and roles</param>
+        public static async Task InitialiseUserRolesAsync(ApplicationDbContext context, IServiceProvider serviceProvider)
+        {
+            var RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            var UserManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+
+            string[] roles = { "Member", "Customer" };
+
+            IdentityResult result;
+
+            foreach (var role in roles)
+            {
+                var exists = await RoleManager.RoleExistsAsync(role);
+
+                if (!exists)
+                {
+                    result = await RoleManager.CreateAsync(new IdentityRole(role));
+                }
+            }
+
+            ApplicationUser member = await UserManager.FindByEmailAsync("MEMBER1@EMAIL.COM");
+            if (!context.UserRoles.Any())
+            {
+                await UserManager.AddToRoleAsync(member, "Member");
+
+                for (int j = 1; j < 6; j++)
+                {
+                    ApplicationUser user = await UserManager.FindByEmailAsync("CUSTOMER" + j + "@EMAIL.COM");
+                    await UserManager.AddToRoleAsync(user, "Customer");
+                }
+            }
+
+            if (!context.RoleClaims.Any())
+            {
+                IdentityRole memberRole = await RoleManager.FindByNameAsync("Member");
+                IdentityRole customerRole = await RoleManager.FindByNameAsync("Customer");
+
+                await RoleManager.AddClaimAsync(memberRole, new Claim("AddPost", "Member"));
+                await RoleManager.AddClaimAsync(memberRole, new Claim("EditPost", "Member"));
+                await RoleManager.AddClaimAsync(memberRole, new Claim("DeletePost", "Member"));
+                await RoleManager.AddClaimAsync(memberRole, new Claim("CommentOnPost", "Member"));
+                await RoleManager.AddClaimAsync(memberRole, new Claim("ChangeUserRole", "Member"));
+                await RoleManager.AddClaimAsync(customerRole, new Claim("CommentOnPost", "Customer"));
             }
         }
     }
