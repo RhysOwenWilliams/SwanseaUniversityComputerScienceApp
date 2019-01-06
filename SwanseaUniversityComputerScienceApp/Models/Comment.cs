@@ -14,7 +14,7 @@ namespace SwanseaUniversityComputerScienceApp.Models
     public class Comment
     {
         public int Id { get; set; }
-        public string CommentInformation { get; set; }
+        public string CommentContent { get; set; }
         public string DateAndTime { get; set; }
         public string CommentBy { get; set; }
 

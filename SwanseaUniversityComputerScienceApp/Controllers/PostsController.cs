@@ -212,7 +212,7 @@ namespace SwanseaUniversityComputerScienceApp.Controllers
 
                 comment.DateAndTime = DateTime.Now.ToString("dd/MM/yy HH:mm");
 
-                comment.CommentInformation = viewModel.CommentName;
+                comment.CommentContent = viewModel.CommentContent;
 
                 comment.CommentBy = GetUser();
 

@@ -15,7 +15,7 @@ namespace SwanseaUniversityComputerScienceApp.Models
         public Post Post { get; set; }
         public int PostID { get; set; }
         [Required]
-        public string CommentName { get; set; }
+        public string CommentContent { get; set; }
         public List<Comment> Comments { get; set; }
     }
 }
