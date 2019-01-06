@@ -1,0 +1,56 @@
+﻿
+@{
+    ViewData["Title"] = "UserRoles";
+}
+
+<div class="center">
+    <h2>Change User Roles</h2>
+    <form asp-controller="Posts" asp-action="UserRoles">
+        <b>User</b>
+        @Html.DropDownList("user", new SelectList(ViewBag.Users), new { @class = "form-control center-dropdown" })
+        <br />
+        <b>Role</b>
+        @Html.DropDownList("role", new SelectList(ViewBag.Roles), new { @class = "form-control center-dropdown" })
+        <br />
+        <div align="center">
+            <input type="submit" value="Save" class="btn btn-default" />
+        </div>
+    </form>
+</div>
+<hr />
+<table class="table" id="myTable">
+    <thead>
+        <tr>
+            <th>
+                <h4>
+                    <i>
+                        User
+                    </i>
+                </h4>
+            </th>
+            <th>
+                <h4>
+                    <i>
+                        Role
+                    </i>
+                </h4>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (KeyValuePair<ApplicationUser, string> userRole in ViewBag.UserRoles)
+        {
+            <tr>
+                <td>
+                    <b>
+                        @userRole.Key
+                    </b>
+                </td>
+                <td>
+                    @userRole.Value
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

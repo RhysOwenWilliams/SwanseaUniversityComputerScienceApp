@@ -1,0 +1,28 @@
+﻿@model SwanseaUniversityComputerScienceApp.Models.Post
+
+@Html.LabelFor(m => m.Id, " ", new { @class = "control-label col-md-2 col-md-offset-2" })
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<div class="raisedbox raised-box-center" >
+    <h1>Are you sure you want to delete this?</h1>
+    <br />
+    <dl>
+        <dd>
+            <h2>@Html.DisplayFor(model => model.PostName)</h2>
+        </dd>
+        <dd>
+            <h5>Posted by <i>@Html.DisplayFor(model => model.PostedBy)</i> at <i>@Html.DisplayFor(model => model.TimeAndDate)</i></h5>
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Delete" class="btn btn-default" />
+        <p class="spacing">
+            <a asp-action="Index">Back to List</a>
+        </p>
+    </form>
+</div>

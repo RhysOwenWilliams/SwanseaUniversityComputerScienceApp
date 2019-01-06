@@ -1,0 +1,82 @@
+﻿@model IEnumerable<SwanseaUniversityComputerScienceApp.Models.Post>
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Swansea University Comp.Sci Forums</h2>
+
+@if (ViewData["SearchedFor"] != null)
+{
+    <h5>
+        You are looking at posts for -        
+        <i>
+            @ViewData["ModuleFilter"]
+        </i>
+        that contain -
+        <i>
+            @ViewData["SearchedFor"]
+        </i>
+    </h5>
+}
+else
+{
+    <h5>
+        You are looking at posts for -
+        @if (ViewData["ModuleFilter"] != null)
+        {
+            <i>
+                @ViewData["ModuleFilter"]
+            </i>
+        }
+        else
+        {
+            <i>
+                All Modules
+            </i>
+        }
+        
+    </h5>
+}
+<hr />
+
+
+@if ((await AuthorizationService.AuthorizeAsync(User, Model, "CanAdd")).Succeeded)
+{
+    <div id="mybutton">
+        <a asp-action="Create" class="feedback btn btn-primary raisedbox">Create New Post</a>
+    </div>
+}
+
+<table class="table spacing">
+    @foreach (var item in Model)
+    {
+
+        <tr class="raisedbox">
+            <td>
+                <h4>[@Html.DisplayFor(modelItem => item.ModuleCode)]</h4>
+            </td>
+            <td>
+                <a asp-action="Details" asp-route-id="@item.Id" class="postText">@Html.DisplayFor(modelItem => item.PostName)</a>
+                <br />
+                Posted on <i>@Html.DisplayFor(modelItem => item.TimeAndDate)</i> by <i>@Html.DisplayFor(modelItem => item.PostedBy)</i>
+            </td>
+            <td>
+                @if ((await AuthorizationService.AuthorizeAsync(User, Model, "CanEdit")).Succeeded)
+                {
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                }
+                <br />
+                @if ((await AuthorizationService.AuthorizeAsync(User, Model, "CanDelete")).Succeeded)
+                {
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                }
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+        </tr>
+    }
+</table>
