@@ -25,18 +25,23 @@ namespace SwanseaUniversityComputerScienceApp.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
+        private readonly ApplicationDbContext _context;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender,
             ILogger<AccountController> logger,
-            ApplicationDbContext context)
+            ApplicationDbContext context,
+            RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _logger = logger;
+            _context = context;
+            _roleManager = roleManager;
         }
 
         [TempData]
@@ -439,6 +444,9 @@ namespace SwanseaUniversityComputerScienceApp.Controllers
         [HttpGet]
         public IActionResult AccessDenied()
         {
+            PostsController controller = new PostsController(_context, _userManager, _roleManager);
+            ViewBag.Module = controller.SetModuleNavbarList();
+
             return View();
         }
 
