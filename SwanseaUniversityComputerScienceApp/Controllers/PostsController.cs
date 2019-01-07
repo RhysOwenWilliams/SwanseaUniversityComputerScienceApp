@@ -344,7 +344,7 @@ namespace SwanseaUniversityComputerScienceApp.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Policy = "CanEdit")]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,PostName,PostInformation,VideoLink,ModuleCode,VideoLink")] Post post)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,PostName,PostInformation,SelectedModule,VideoLink")] Post post)
         {
             if (id != post.Id)
             {
