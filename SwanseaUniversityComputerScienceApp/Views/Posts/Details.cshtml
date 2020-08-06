@@ -13,7 +13,7 @@
     <hr />
     <dl>
         <dd class="video raised-box-center">
-            @*@if (Model.Post.VideoLink != null)
+            @if (Model.Post.VideoLink != null)
             {
                 <div>
                     <iframe class="framesize" src="//www.youtube.com/embed/@Html.DisplayFor(model => model.Post.VideoLink)" allowfullscreen ></iframe>
@@ -26,10 +26,10 @@
                     $(".video").hide();
                 </script>
 
-            }*@
+            }
         </dd>
         <dd class="details">
-            @*@if (Model.Post.PostInformation != null)
+            @if (Model.Post.PostInformation != null)
             {
                 @Html.DisplayFor(model => model.Post.PostInformation)
                 <hr />
@@ -40,7 +40,7 @@
                     $(".details").hide();
                 </script>
 
-            }*@
+            }
         </dd>
     </dl>
 </div>
@@ -93,6 +93,9 @@
 </table>
 
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Post.Id">Edit</a> |
+    @if ((await AuthorizationService.AuthorizeAsync(User, Model, "CanEdit")).Succeeded)
+    {
+        <a asp-action="Edit" asp-route-id="@Model.Post.Id">Edit</a>
+    }
     <a asp-action="Index">Back to List</a>
 </div>

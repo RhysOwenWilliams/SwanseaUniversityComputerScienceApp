@@ -10,7 +10,7 @@
 
 @if (ViewData["SearchedFor"] != null)
 {
-    <h5>
+    <h6>
         You are looking at posts for -        
         <i>
             @ViewData["ModuleFilter"]
@@ -19,11 +19,11 @@
         <i>
             @ViewData["SearchedFor"]
         </i>
-    </h5>
+    </h6>
 }
 else
 {
-    <h5>
+    <h6>
         You are looking at posts for -
         @if (ViewData["ModuleFilter"] != null)
         {
@@ -38,7 +38,7 @@ else
             </i>
         }
         
-    </h5>
+    </h6>
 }
 <hr />
 

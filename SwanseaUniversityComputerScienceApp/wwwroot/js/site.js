@@ -1,13 +1,4 @@
-﻿//$(document).ready(function (e) {
-//    $("#search").keydown(function (e) {
-//        var key = e.keyCode;
-//        if (!(key === 8 || key === 32 || (key >= 65 && key <= 90))) {
-//            e.preventDefault();
-//        }
-//    });
-//});
-
-// When the user scrolls the page, execute myFunction 
+﻿// When the user scrolls the page, execute myFunction 
 window.onscroll = function () { myFunction() };
 
 function myFunction() {

@@ -104,13 +104,14 @@ namespace SwanseaUniversityComputerScienceApp.Data
                 }
 
                 context.SaveChangesAsync();
+           
 
-                context.Database.EnsureCreated();
+            }
 
-                if (!context.Post.Any() && !context.Modules.Any())
+            if (!context.Post.Any() && !context.Modules.Any())
+            {
+                var Posts = new Post[]
                 {
-                    var Posts = new Post[]
-                    {
                     new Post
                     {
                         PostName = "Mobile Apps Exam",
@@ -147,7 +148,6 @@ namespace SwanseaUniversityComputerScienceApp.Data
                     new Post
                     {
                         PostName = "REMINDER: PLEASE COMPLETE THE MODULE FEEDBACK",
-                        VideoLink = "",
                         PostInformation = "The feedback pages are available on Blackboard",
                         ModuleCode = "All Modules",
                         PostedBy = "Member1",
@@ -162,15 +162,15 @@ namespace SwanseaUniversityComputerScienceApp.Data
                         PostedBy = "Member1",
                         TimeAndDate = "07/01/19 10:43"
                     },
-                    };
+                };
 
-                    foreach (Post p in Posts)
-                    {
-                        context.Post.Add(p);
-                    }
+                foreach (Post p in Posts)
+                {
+                    context.Post.Add(p);
+                }
 
-                    var modules = new Module[]
-                    {
+                var modules = new Module[]
+                {
                     new Module { ModuleName = "All Modules"},
                     new Module { ModuleName = "AR-501" },
                     new Module { ModuleName = "CSC306" },
@@ -191,18 +191,15 @@ namespace SwanseaUniversityComputerScienceApp.Data
                     new Module { ModuleName = "CSP302" },
                     new Module { ModuleName = "CSP344" },
                     new Module { ModuleName = "CSP354" }
-                    };
+                };
 
-                    foreach (Module m in modules)
-                    {
-                        context.Modules.Add(m);
-                    }
-
-                    context.SaveChangesAsync();
+                foreach (Module m in modules)
+                {
+                    context.Modules.Add(m);
                 }
-           
 
-        }
+                context.SaveChangesAsync();
+            }
         }
 
         /// <summary>
